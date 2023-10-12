@@ -1,0 +1,184 @@
+{% load static %}
+{% load fornewb_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'fornewb/images/main.ico' %}" type="image/x-icon">
+    <link type="text/css" href="{% static 'fornewb/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'fornewb/css/fontello.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'fornewb/css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+
+
+    <header>
+        {% block mainmenu %}
+        <div class="conteiner">
+            <div class="row">
+                <div class="col-12">
+                    <a href="{% url 'home' %}">
+                        <h1 class="text-center text-white">Статьи для начинающих программистов</h1>
+                    </a>
+    
+                    <!-- Кнопка YouTube -->
+                    <div class="itd_play" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        
+                              <!-- Modal -->
+                              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">С чего начать</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <div class='embed-container'><iframe src='https://www.youtube.com/embed//rRPn65GreMI' frameborder='0' allowfullscreen></iframe></div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                    </div>
+                    <!-- конец кнопки YouTube -->
+                </div>
+            </div>
+        </div>
+    <!-- Менюшка сверху -->
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-xl-8 col-md-12 col-sm-12">
+                <ul class="list-inline">
+                    {% for m in menu %}
+                    <li class="list-inline-item"><a href="{% url m.url_name %}"><small>{{m.title}}</small></a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+    
+        <div class="col-xl-4 col-md-12 col-sm-12">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'user_account' %}"><small>Рады вам {{user.username}}</small></a> 
+            <small>|</small> 
+            <a href="{% url 'logout' %}"><small>Выйти</small></a>
+            {% else %}
+            <a href="{% url 'register' %}"><small>Регистрация</small></a> 
+            <small>|</small> 
+            <a href="{% url 'login' %}"><small>Войти</small></a>
+            {% endif %}
+        </div>
+        </div>                  
+    </div>
+    {% endblock mainmenu %}
+    <!-- конец менюшки сверху -->
+    
+    </header>
+
+
+
+
+<!-- Тело сайта -->
+<div class="container text-center">
+    <div class="row">
+
+
+        <!-- Меню слева -->
+        <div class="col-xl-2 col-md-3 col-sm-3">
+            <ul class="list-group">
+                {% if cat_selected == 0 %}
+                <li class="list-group-item"><small>Все статьи</small></li>
+                {% else %}
+                <li class="list-group-item"><a href="{% url 'home' %}"><small>Все статьи</small></a></li>
+                {% endif %}
+
+                {% for c in cats%}
+                    {% if c.fornewb__count > 0 %}
+                        {% if c.pk == cat_selected %}
+                            <li class="list-group-item"><small>{{ c.name }}</small></li>
+                        {% else %}
+                            <li class="list-group-item"><a href="{{ c.get_absolute_url }}"><small>{{ c.name }}</small></a></li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- конец меню слева -->
+
+
+        <!-- Блок контент -->
+        <div class="col-xl-8 col-md-6 col-sm-6">
+            <ul class="list-inline">
+
+                {% block content %}
+                {% endblock %}
+
+            </ul>
+        </div>
+        <!-- Конец блока контента -->
+
+
+        <!-- Конвертер валют -->
+        <div class="col-xl-2 col-md-3 col-sm-3">
+            <a href="#"><small>Тут будет конвертер валют</small></a>
+        </div>
+        <!-- Конец конвертера валют -->
+
+
+    </div>                  
+</div>
+<!-- Конец тела сайта -->
+
+
+
+
+
+
+
+<!-- Ниже пагинация и футер их пока не трогаем -->
+
+<!-- Блок пагинации -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+{% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+        {% endif %}
+
+        {% for p in paginator.page_range %}
+        {% if page_obj.number == p %}
+      <li class="page-item"><a class="page-link" href="#">{{p}}</a></li>
+      {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+      <li class="page-item"><a class="page-link" href="?page={{p}}">{{p}}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      {% endif %}
+
+    </ul>
+  </nav>
+<!-- Конец блока пагинации -->
+
+
+<footer>
+    <p>&copy; 2023 Материал ислючительно для учебных целей</p>
+
+    <p>Полезные ссылки:</p>
+    <p>Для создания градиента: https://www.colorzilla.com/gradient-editor/</p>
+    <p>Для встроенного видео с YouTube: http://embedresponsively.com/</p>
+</footer>
+
+
+    <script src="{% static 'fornewb/js/bootstrap.bundle.min.js' %}">
+
+</body>
+</html>

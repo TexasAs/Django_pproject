@@ -1,0 +1,65 @@
+:root {
+    --color1: #5700AAFF;
+    --color2: #0086AAFF;
+}
+header, footer, section {
+    padding: 10px;
+}
+header {
+    padding: 20px;
+}
+header, footer {
+    background: linear-gradient(to right,  var(--color2) 0%,var(--color1) 100%);
+}
+/* этот блок для кнопки YouTube */
+.itd_play {
+    background: url('../images/Youtube_36365.png');
+    background-color: var(--color2);
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 10px auto 10px;
+    transition: all 0.2s ease;
+}
+.itd_play:hover {
+    background-color: var(--color1);
+}
+
+.embed-container {
+    position: relative; 
+    padding-bottom: 56.25%; 
+    height: 0; 
+    overflow: hidden; 
+    max-width: 100%; 
+} 
+.embed-container iframe, .embed-container object, .embed-container embed { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+}
+
+/* этот блок для index.html категория/дата публикации */
+li {
+    list-style-type: none;
+}
+div.article-panel {
+    background: #13B9E5FF;
+    padding: 5px 10px 5px 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    color: wite;
+}
+div.article-panel p.first {
+    margin: 0;
+    float: left;
+}
+div.article-panel p.last {
+    margin: 0;
+    float: right;
+}

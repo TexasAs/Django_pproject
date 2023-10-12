@@ -1,0 +1,18 @@
+{% extends 'fornewb/base.html' %}
+
+{% block content %}
+<figure class="text-center">
+    <blockquote class="blockquote">
+        <h1 class="article_title">{{ post.article_title }}</h1>
+    </blockquote>
+</figure>
+
+{% if post.photo %}
+<img src="{{ post.photo.url }}" class="col-md-6 float-md-end mb-3 ms-md-3" alt="...">
+{% endif %}
+<p>
+{{ post.content }}
+</p>
+{% endblock %}
+
+<!-- Взято из Layout/Columns(с самого низу) а заголовок из Content/Typography  -->
